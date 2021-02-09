@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string>
+#include "../client/client_message.h"
 #define PORT 5000
 #define MAXLINE 1024
 int max(int x, int y)
@@ -85,7 +86,14 @@ int main()
 				//printf("Message From TCP client: ");
 				read(connfd, buffer, sizeof(buffer));
 				//puts(buffer);
+				std::stringstream ss;
+				std::string temp;
+				temp.assign(buffer);
+				ss<<temp;
+				Message obj;
+				ss >> obj;
 				printf("Message receieved : %s \n", buffer);
+				std::cout<<obj.test_int_1<<"   "<<obj.test_str_1<<std::endl;
 				write(connfd, (const char*)message.c_str(), sizeof(buffer));
 				close(connfd);
 				exit(0);
