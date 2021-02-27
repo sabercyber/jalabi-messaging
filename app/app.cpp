@@ -13,25 +13,39 @@
 
 #define OSTREAM_OUTPUT
 #include <iostream>
+#include "../inc/udp.h"
 #include <vector>
 #include <string>
 #include <map>
+#include <errno.h>
+
+//#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+//#include <sys/socket.h>
+//#include <sys/types.h>
+//#include <arpa/inet.h>
 
 #include "../inc/message.h"
 #include "../inc/packet_reader.h"
 #include "../inc/packet_writer.h"
 #include "../inc/utilities.h"
-#include "../inc/udp.h"
+
+
 
 
 
 using namespace std;
 
 
-
 const int PORT_NUM = 9109;
+extern void send_packet_web(std::string data);
 
 void runServer() {
+	//make_json();
   UdpSocket sock;
   typedef std::vector<SockAddr> socket_details;
 
@@ -138,6 +152,14 @@ void runServer() {
 			  }
 		  }
           // end of subscription dispatching activity
+
+          // special operation JSON and sending to web
+          std::string web_data;
+          if (msg->match("/web").popStr(web_data).isOkNoMoreArgs())
+          {
+			  //cout << " Message: /web" << "Data: " << web_data << std::endl;
+			  send_packet_web(web_data);
+          }
 
 #if 0
 
