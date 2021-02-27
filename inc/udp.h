@@ -40,6 +40,7 @@
 # include <netdb.h>
 # include <sys/time.h>
 #endif
+#include <unistd.h>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -416,8 +417,46 @@ struct Url {
   }
 };
 
+//Created a new function for a seperate UDP sent to web
+void send_packet_web(std::string data)
+{
+	int sockfd;
+	char buffer[1024];
+    //prepare the stringify version of JSON data to be sent out
+	std::string temp = data;
+	int last = temp.find(">");
+	std::string strNew = "{"+ temp.substr (1,last-1)+"}";
+	struct sockaddr_in servaddr;
 
 
+	// Creating socket file descriptor
+	if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+		std::cout <<"socket creation failed"<<std::endl;;
+		exit(0);
+	}
+
+
+	memset(&servaddr, 0, sizeof(servaddr));
+
+	// Filling server information
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port = htons(9990);
+	servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+	if (connect(sockfd, (struct sockaddr*)&servaddr,
+							sizeof(servaddr)) < 0) {
+		std::cout<<" Error : Connect Failed "<< std::endl;
+	}
+
+
+	memset(buffer, 0, sizeof(buffer));
+
+	strcpy(buffer, strNew.c_str() );
+
+	int buffer_data = write(sockfd, buffer, strlen(strNew.c_str()));
+
+	close(sockfd);
+}
 
 
 
