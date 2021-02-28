@@ -45,8 +45,10 @@ const int PORT_NUM = 9109;
 extern void send_packet_web(std::string data);
 
 void runServer() {
-	//make_json();
+	
   UdpSocket sock;
+  UdpSocket web_sock;
+  sock.connectTo("localhost", 9990);
   typedef std::vector<SockAddr> socket_details;
 
   std::map<std::string, socket_details> sub_list;
@@ -60,7 +62,7 @@ void runServer() {
     cout << "Server started, will listen to packets on port " << PORT_NUM << std::endl;
     packet_reader pr;
     packet_writer pw;
-    while (/*sock.isOk()*/1) {
+    while (sock.isOk()) {
       if (sock.receiveNextPacket(30 /* timeout, in ms */)) {
         pr.init(sock.packetData(), sock.packetSize());
         message *msg;
@@ -157,8 +159,19 @@ void runServer() {
           std::string web_data;
           if (msg->match("/web").popStr(web_data).isOkNoMoreArgs())
           {
-			  //cout << " Message: /web" << "Data: " << web_data << std::endl;
-			  send_packet_web(web_data);
+			        cout << " Message: /web" << "Data: " << web_data << std::endl;
+			        //send_packet_web(web_data);
+              
+              if (!web_sock.isOk())
+                std::cout << "connection to UDP web server faild" << std::endl;
+              else
+              {
+                  std::string scrubbed_web_data = cleanup_web_data(web_data);
+                  bool ok = sock.sendPacket(scrubbed_web_data.c_str(), scrubbed_web_data.length());
+                  std::cout << "Status of packet to web: " << ok << std::endl;
+              }
+              
+
           }
 
 #if 0
