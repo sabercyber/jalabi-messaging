@@ -42,13 +42,15 @@ using namespace std;
 
 
 const int PORT_NUM = 9109;
+const int WEB_PORT_NUM = 9990;
 extern void send_packet_web(std::string data);
 
 void runServer() {
-	
+	//make_json();
   UdpSocket sock;
   UdpSocket web_sock;
-  sock.connectTo("localhost", 9990);
+  sock.connectTo("localhost", PORT_NUM);
+  web_sock.connectTo("localhost", WEB_PORT_NUM);
   typedef std::vector<SockAddr> socket_details;
 
   std::map<std::string, socket_details> sub_list;
@@ -167,7 +169,7 @@ void runServer() {
               else
               {
                   std::string scrubbed_web_data = cleanup_web_data(web_data);
-                  bool ok = sock.sendPacket(scrubbed_web_data.c_str(), scrubbed_web_data.length());
+                  bool ok = web_sock.sendPacket(scrubbed_web_data.c_str(), scrubbed_web_data.length());
                   std::cout << "Status of packet to web: " << ok << std::endl;
               }
               
