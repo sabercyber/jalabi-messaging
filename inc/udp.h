@@ -435,6 +435,8 @@ void send_packet_web(std::string data)
 		exit(0);
 	}
 
+ 
+ 
 
 	memset(&servaddr, 0, sizeof(servaddr));
 
@@ -458,6 +460,12 @@ void send_packet_web(std::string data)
 	close(sockfd);
 }
 
-
+std::string cleanup_web_data(std::string web_data)
+{
+   	std::string temp = web_data;
+	  int last = temp.find(">");
+	  std::string strNew = "{"+ temp.substr (1,last-1)+"}";
+    return strNew;
+}
 
 #endif /* INC_UDP_H_ */
