@@ -95,20 +95,18 @@ void runServer() {
         	  else {
         		  list_itr = sub_list.find(_recvd_sub_list);
         		  if(list_itr != sub_list.end()){
-        			  //sub_list.insert(list_itr, std::pair <std::string, socket_details>(_recvd_sub_list,local_sock));
-        			  list_itr->second.push_back(local_data);
+        		    list_itr->second.push_back(local_data);
         			 // cout << "added found the topic list" << endl;
 
         		  }
 
         		  else {
-        			  //list_itr++;
-        			  //local_sock.push_back(local_data);
+        			  
         			  list_itr = sub_list.end();
         			  socket_details local_sock;
         			  local_sock.push_back(local_data);
         			  list_itr = sub_list.emplace_hint(list_itr, std::pair <std::string, socket_details>(_recvd_sub_list,local_sock));
-        			  //list_itr->second.push_back(local_data);
+        			 
         			  //cout << "new topic" << endl;
         		  }
 
