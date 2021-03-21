@@ -19,21 +19,29 @@ In the Socket server class it is possible to have the following operations
   <img src ="https://res.cloudinary.com/sabercyber/image/upload/v1615046056/socket_classes/code_socket_class_usvepr.bmp">
 </p>
 
-# Compilation and Usage
-## Code Organization 
+## Compilation as stand alone application and Usage
+### Code Organization 
     -->app : has application that use the class created
     -->inc : header files
     -->src : implementation files 
-### Compile for Socket application for publishing message
+#### Compile for Socket application for publishing message
 in the app folder
 ```
 g++ client_app.cpp ../src/*.cpp -o client_app -I ../inc
 ```
 
-### Compile for Socket server application for handling messages
+#### Compile for Socket server application for handling messages
 in the app folder
 ```
 g++ server_app.cpp ../src/*.cpp -o server_app -I ../inc
 ```
 
 ![operation](https://res.cloudinary.com/sabercyber/image/upload/v1615046054/socket_classes/execution_ubaidi.png)
+
+## Compilation as a library 
+In the apps folder
+```
+g++ -c ../src/*.cpp  -I ../inc/ -fPIC
+
+g++ -shared -o libmysocket.so *.o
+```
