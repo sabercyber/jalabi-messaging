@@ -40,7 +40,43 @@ The server code is small in memory foot print in < 500KB
       bool ok = sock.sendPacket(pw.packetData(), pw.packetSize());
 ```
 
-## Compilation 
+## Compilation with socket classes
+Linux compliation tested
+Remember to compile the socket classes library. Follow the instruction from that folder
+Remember to export 
+### server compilation 
+#### at the app folder level
+```
+g++  new_app.cpp -I ../socket_classes/inc/ -L ../socket_classes/apps/ -lmysocket -o new_server_app -D Debug_Server_message ./new_server_app
+
+# for compilation without debug support
+g++  new_app.cpp -I ../socket_classes/inc/ -L ../socket_classes/apps/ -lmysocket -o new_server_app  ./new_server_app
+
+```
+operation is just to execute the executable
+```
+./new_server_app
+```
+### client compilation 
+#### at the client folder
+```
+g++ new_client.cpp -o new_client -I ../socket_classes/inc/ -L ../socket_classes/apps/ -lmysocket
+# for launching 
+./new_client "/subscribe" 5 " /karthik " 5000  udp  127.0.0.1
+
+```
+
+### publisher compilation 
+#### at the publisher folder
+```
+g++ new_publisher.cpp -o new_pub -I ../socket_classes/inc/ -L ../socket_classes/apps/ -lmysocket 
+# for launching 
+./new_pub "/karthik" 5 " Hi There " 5000 tcp 127.0.0.1
+
+```
+
+
+## Compilation - Depricated
 
 
 ### Server compilation 
